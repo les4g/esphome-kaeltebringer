@@ -26,8 +26,8 @@ namespace kaeltebringer {
   }
 
 void KaeltebringerClimate::set_custom_fan_mode(const std::string &fan_mode) {
-    if (this->custom_fan_mode_ != nullptr && std::string(this->custom_fan_mode_) == fan_mode) return;
-    this->custom_fan_mode_ = strdup(fan_mode.c_str());
+    if (this->custom_fan_mode_local_ == fan_mode) return;
+    this->custom_fan_mode_local_ = fan_mode;
     this->is_changed = true;
 }
 
