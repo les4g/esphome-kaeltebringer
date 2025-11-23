@@ -25,11 +25,11 @@ namespace kaeltebringer {
     this->is_changed = true;
   }
 
-  void KaeltebringerClimate::set_custom_fan_mode(const std::string &fan_mode) {
-    if (this->custom_fan_mode == fan_mode) return;
-    this->custom_fan_mode = fan_mode;
+void KaeltebringerClimate::set_custom_fan_mode(const std::string &fan_mode) {
+    if (this->custom_fan_mode_ != nullptr && std::string(this->custom_fan_mode_) == fan_mode) return;
+    this->custom_fan_mode_ = strdup(fan_mode.c_str());
     this->is_changed = true;
-  }
+}
 
   void KaeltebringerClimate::set_mode(esphome::climate::ClimateMode mode) {
     if (this->mode == mode) return;
