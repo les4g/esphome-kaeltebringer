@@ -9,7 +9,15 @@ namespace kaeltebringer {
     // This will be called by App.setup()
   }
 
-  void KaeltebringerClimate::set_beep_enabled(bool enabled) { this->beep_enabled_ = enabled; }
+  void KaeltebringerClimate::set_beep_enabled(bool enabled) { 
+    this->beep_enabled_ = enabled; 
+    this->is_changed = true;
+  }
+
+  void KaeltebringerClimate::set_display_enabled(bool enabled) {
+    this->display_enabled_ = enabled;
+    this->is_changed = true;
+  }
 
   void KaeltebringerClimate::set_current_temperature(float current_temperature) {
     if (this->current_temperature == current_temperature) return;
@@ -48,7 +56,7 @@ namespace kaeltebringer {
     m_set_cmd.data.off_timer_en = 0;
     m_set_cmd.data.on_timer_en = 0;
     m_set_cmd.data.beep = int(this->beep_enabled_);
-    m_set_cmd.data.disp = 1;
+    m_set_cmd.data.disp = this->display_enabled_ ? 1 : 0;
     m_set_cmd.data.eco = 0;
 
     switch (get_cmd_resp->data.mode) {
@@ -285,6 +293,9 @@ namespace kaeltebringer {
         print_hex_str(buffer, len);
         if (is_valid_xor(buffer, len)) {
           float curr_temp = (((buffer[17] << 8) | buffer[18]) / 374 - 32) / 1.8;
+
+          this->beep_enabled_    = m_get_cmd_resp.data.beep;
+          this->display_enabled_ = m_get_cmd_resp.data.disp;
 
           if (m_get_cmd_resp.data.power == 0x00) this->set_mode(climate::CLIMATE_MODE_OFF);
           else if (m_get_cmd_resp.data.mode == 0x01) this->set_mode(climate::CLIMATE_MODE_COOL);
