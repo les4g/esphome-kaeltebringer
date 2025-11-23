@@ -146,7 +146,7 @@ class KaeltebringerClimate : public PollingComponent, public climate::Climate, p
 
       uint8_t byte_14_bit_0_2 : 3;
       uint8_t byte_14_bit_3 : 1;
-      uint8_t byte_14_bit_4 : 1;//uint8_t hswing : 1;
+      uint8_t byte_14_bit_4 : 1;
       uint8_t half_degree : 1;
       uint8_t byte_14_bit_6_7 : 2;
 
@@ -189,9 +189,9 @@ class KaeltebringerClimate : public PollingComponent, public climate::Climate, p
   set_cmd_t m_set_cmd = {0};
   
   climate::ClimateTraits traits() override {
-    // The capabilities of the climate device
+    // Les capacités du dispositif de climatisation
     auto traits = climate::ClimateTraits();
-    traits.add_feature_flag(climate::FEATURE_SUPPORTS_CURRENT_TEMPERATURE);
+    traits.add_feature_flags({climate::CLIMATE_SUPPORTS_CURRENT_TEMPERATURE});
     traits.set_supported_modes({climate::CLIMATE_MODE_OFF, climate::CLIMATE_MODE_COOL, climate::CLIMATE_MODE_HEAT, climate::CLIMATE_MODE_FAN_ONLY, climate::CLIMATE_MODE_DRY, climate::CLIMATE_MODE_AUTO});
     traits.set_supported_custom_fan_modes({"Turbo", "Mute", "Automatic", "1", "2", "3", "4", "5"});
     traits.set_supported_swing_modes({climate::CLIMATE_SWING_OFF, climate::CLIMATE_SWING_BOTH, climate::CLIMATE_SWING_VERTICAL, climate::CLIMATE_SWING_HORIZONTAL});
@@ -211,6 +211,8 @@ protected:
   bool beep_enabled_{true};
   bool display_enabled_{true};
   bool is_changed{false};
+  // Nouvelle variable pour stocker le mode ventilateur personnalisé
+  std::string custom_fan_mode_local_;
   void control(const climate::ClimateCall &call) override;
   void build_set_cmd(get_cmd_resp_t * get_cmd_resp);
   int read_data_line(int readch, uint8_t *buffer, int len);
@@ -224,5 +226,4 @@ protected:
 
 };
 
-}
 }
