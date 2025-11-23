@@ -225,9 +225,10 @@ void KaeltebringerClimate::set_custom_fan_mode(const std::string &fan_mode) {
       build_set_cmd(&get_cmd_resp);
       ready_to_send_set_cmd_flag = true;
     }
-    if (call.get_custom_fan_mode().has_value()) {
-      // User requested target temperature change
-      std::string fan_mode = *call.get_custom_fan_mode();
+    if (call.get_custom_fan_mode() != nullptr) {
+      // User requested custom fan mode change
+      std::string fan_mode = call.get_custom_fan_mode();
+      this->set_custom_fan_mode(fan_mode);
 
       get_cmd_resp_t get_cmd_resp = {0};
       memcpy(get_cmd_resp.raw, m_get_cmd_resp.raw, sizeof(get_cmd_resp.raw));

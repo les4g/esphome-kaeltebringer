@@ -1,0 +1,24 @@
+{
+  "configurations": [
+    {
+      "name": "ESPHome",
+      "includePath": [
+        "${workspaceFolder}/**",
+        "${workspaceFolder}/.pio/libdeps/**",
+        "${workspaceFolder}/components",
+        "${workspaceFolder}/components/kaeltebringer"
+      ],
+      "browse": {
+        "path": [
+          "${workspaceFolder}",
+          "${workspaceFolder}/.pio/libdeps/**"
+        ]
+      },
+      "compilerPath": "/usr/bin/clang",
+      "cStandard": "c11",
+      "cppStandard": "c++17",
+      "intelliSenseMode": "macos-clang-x64"
+    }
+  ],
+  "version": 4
+}
