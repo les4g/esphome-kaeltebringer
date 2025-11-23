@@ -167,6 +167,9 @@ void KaeltebringerClimate::set_custom_fan_mode(const std::string &fan_mode) {
           case climate::CLIMATE_MODE_AUTO:
             get_cmd_resp.data.mode = 0x05;
             break;
+          default:
+            get_cmd_resp.data.mode = 0x01;
+            break;
         }
       }
 
@@ -211,6 +214,10 @@ void KaeltebringerClimate::set_custom_fan_mode(const std::string &fan_mode) {
           break;
         case climate::CLIMATE_SWING_HORIZONTAL:
           get_cmd_resp.data.hswing = 1;
+          get_cmd_resp.data.vswing = 0;
+          break;
+        default:
+          get_cmd_resp.data.hswing = 0;
           get_cmd_resp.data.vswing = 0;
           break;
       }
@@ -294,8 +301,8 @@ void KaeltebringerClimate::set_custom_fan_mode(const std::string &fan_mode) {
         if (is_valid_xor(buffer, len)) {
           float curr_temp = (((buffer[17] << 8) | buffer[18]) / 374 - 32) / 1.8;
 
-          this->beep_enabled_    = m_get_cmd_resp.data.beep;
-          this->display_enabled_ = m_get_cmd_resp.data.disp;
+          // this->beep_enabled_    = m_get_cmd_resp.data.beep;
+          // this->display_enabled_ = m_get_cmd_resp.data.disp;
 
           if (m_get_cmd_resp.data.power == 0x00) this->set_mode(climate::CLIMATE_MODE_OFF);
           else if (m_get_cmd_resp.data.mode == 0x01) this->set_mode(climate::CLIMATE_MODE_COOL);
